@@ -6,7 +6,7 @@ import Register from './Register';
 import Home from './home';
 import PostManagement from './post';
 import Statistics from './Statistics';
-
+import UserManagement from './user';
 
 function App() {
   return (
@@ -17,6 +17,7 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/quan-ly-bai-dang" element={<PostManagement />} />
         <Route path="/thong-ke" element={<Statistics />} />
+        <Route path="/quan-ly-nguoi-dung" element={<UserManagement />} />
         
       </Routes>
     </Router>
