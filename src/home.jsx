@@ -1,6 +1,6 @@
 import React from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
-
+import { Link } from "react-router-dom";
 export default function Home() {
   const users = [
     {
@@ -25,10 +25,10 @@ export default function Home() {
       <header className="flex justify-between items-center px-8 py-4 bg-white shadow-md">
         <img src="/img/logo.png" alt="Logo" className="h-16" />
         <nav className="space-x-10 text-lg font-semibold uppercase text-gray-800">
-          <a href="#">Trang chủ</a>
-          <a href="#">Quản lý bài đăng</a>
-          <a href="#">Thống kê</a>
-          <a href="#">Quản lý người dùng</a>
+          <Link to="/home" className="text-blue-700">Trang chủ</Link>
+          <Link to="/quan-ly-bai-dang">Quản lý bài đăng</Link>
+          <Link to="/thong-ke">Thống kê</Link>
+          <Link to="/quan-ly-nguoi-dung">Quản lý người dùng</Link>
         </nav>
       </header>
 

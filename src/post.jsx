@@ -26,12 +26,10 @@ export default function PostManagement() {
       <header className="flex justify-between items-center px-8 py-4 bg-white shadow-md">
         <img src="/img/logo.png" alt="Logo" className="h-16" />
         <nav className="space-x-10 text-lg font-semibold uppercase text-gray-800">
-          <a href="#">Trang chủ</a>
-          <a href="#" className="text-blue-700">
-            Quản lý bài đăng
-          </a>
-          <a href="#">Thống kê</a>
-          <a href="#">Quản lý người dùng</a>
+          <a href="/home">Trang chủ</a>
+          <a href="/quan-ly-bai-dang" className="text-blue-700">Quản lý bài đăng</a>
+          <a href="/thong-ke" >Thống kê</a>
+          <a href="/quan-ly-nguoi-dung">Quản lý người dùng</a>
         </nav>
       </header>
 
