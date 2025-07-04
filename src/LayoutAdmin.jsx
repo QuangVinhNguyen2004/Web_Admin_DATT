@@ -1,3 +1,4 @@
+import React from "react";
 import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
 import {
   FaTachometerAlt,
@@ -6,37 +7,15 @@ import {
   FaChartBar,
   FaHandsHelping,
 } from "react-icons/fa"; 
-import "../css/layouts/layoutAdmin.css";
-
+import "./css/layoutAdmin.css";
+import logo from './assets/logo.png';
 const menuItems = [
-  {
-    path: "/",
-    icon: <FaTachometerAlt />,
-    label: "Bảng điều khiển",
-  },
-  {
-    path: "/users",
-    icon: <FaUser />,
-    label: "Người dùng",
-  },
-  {
-    path: "/moderate-posts",
-    icon: <FaClipboardCheck />,
-    label: "Duyệt bài",
-  },
-  {
-    path: "/statistics",
-    icon: <FaChartBar />,
-    label: "Thống kê",
-  },
-  {
-    path: "/support",
-    icon: <FaHandsHelping />,
-    label: "Hỗ trợ",
-  },
+  { path: "/home", icon: <FaTachometerAlt />, label: "Bảng điều khiển" },
+  { path: "/quan-ly-nguoi-dung", icon: <FaUser />, label: "Người dùng" },
+  { path: "/quan-ly-bai-dang", icon: <FaClipboardCheck />, label: "Duyệt bài" },
+  { path: "/thong-ke", icon: <FaChartBar />, label: "Thống kê" },
+  { path: "/ho-tro", icon: <FaHandsHelping />, label: "Hỗ trợ" },
 ];
-
-
 
 const LayoutAdmin = () => {
   const navigate = useNavigate();
@@ -52,7 +31,7 @@ const LayoutAdmin = () => {
       {/* Header */}
       <header className="layout-header">
         <Link to="/" className="logo-section">
-          <img src="/assets/logo.png" alt="FMCarer Logo" />
+          <img src={logo} alt="FMCarer Logo" />
           <span className="brand-name">FMCarer</span>
         </Link>
         <div className="header-actions">

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './support.css'; // nếu muốn tách CSS riêng
+import './css/support.css'; // nếu muốn tách CSS riêng
 
 const Support = () => {
   const [email, setEmail] = useState('');

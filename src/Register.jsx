@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+//import axios from 'axios';
 import { FaGoogle, FaFacebookF } from 'react-icons/fa';
 
 function Register() {
@@ -28,12 +28,12 @@ function Register() {
     }
 
     try {
-      const response = await axios.post('http://localhost:3000/api/register', {
-        firstName: form.firstName,
-        lastName: form.lastName,
-        email: form.email,
-        password: form.password,
-      });
+      // const response = await axios.post('http://localhost:3000/api/register', {
+      //   firstName: form.firstName,
+      //   lastName: form.lastName,
+      //   email: form.email,
+      //   password: form.password,
+      // });
 
       // Nếu đăng ký thành công
       setSuccess('Đăng ký thành công! Hãy đăng nhập.');

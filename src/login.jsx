@@ -1,31 +1,31 @@
 import React, { useState } from "react";
-import axios from "axios";
+//import axios from "axios";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setError("");
+  // const handleLogin = async (e) => {
+  //   e.preventDefault();
+  //   setError("");
 
-    try {
-      const response = await axios.post("http://localhost:3000/api/login", {
-        email,
-        password,
-      });
+  //   try {
+  //     const response = await axios.post("http://localhost:3000/api/login", {
+  //       email,
+  //       password,
+  //     });
 
-      // Xử lý khi đăng nhập thành công
-      const { token, user } = response.data;
-      localStorage.setItem("token", token);
-      // Ví dụ: chuyển hướng sang trang chính
-      window.location.href = "/dashboard";
-    } catch (err) {
-      console.error(err);
-      setError("Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.");
-    }
-  };
+  //     // Xử lý khi đăng nhập thành công
+  //     const { token, user } = response.data;
+  //     localStorage.setItem("token", token);
+  //     // Ví dụ: chuyển hướng sang trang chính
+  //     window.location.href = "/dashboard";
+  //   } catch (err) {
+  //     console.error(err);
+  //     setError("Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.");
+  //   }
+  // };
 
   return (
     <div
