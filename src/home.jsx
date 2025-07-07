@@ -1,67 +1,102 @@
 import React from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import './css/home.css'; 
+const users = [
+  {
+    id: "f7h4s5",
+    name: "James Silkwell",
+    email: "silkwell08@gmail.com",
+    createdAt: "12.06.2025 - 12:53 PM",
+    phone: "0934324343",
+    status: "Hoạt động",
+  },
+  {
+    id: "dsf56yr",
+    name: "Doreko999",
+    email: "sheikb123@gmail.com",
+    createdAt: "12.06.2025 - 12:05 PM",
+    phone: "0934324343",
+    status: "Hoạt động",
+  },
+  {
+    id: "rhkui33",
+    name: "NKKGhost Styer",
+    email: "3vkned8@gmail.com",
+    createdAt: "12.06.2025 - 11:15 AM",
+    phone: "0934324343",
+    status: "Hoạt động",
+  },
+  {
+    id: "3lreuw",
+    name: "Trịnh Trần Phương Tuấn",
+    email: "0xaohbacon5@gmail.com",
+    createdAt: "12.06.2025 - 09:53 AM",
+    phone: "0934324343",
+    status: "Bị khóa",
+  },
+];
+
 export default function Home() {
-  const users = [
-    {
-      id: 1,
-      name: "Nguyễn Văn A",
-      phone: "0947387242",
-      email: "vbdhsja@gmail.com",
-      password: "**********",
-    },
-    ...Array(5).fill({
-      id: 1,
-      name: "XXXXX",
-      phone: "XXXXX",
-      email: "XXXXX",
-      password: "XXXXX",
-    }),
-  ];
-
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Header */}
-      <header className="flex justify-between items-center px-8 py-4 bg-white shadow-md">
-        <img src="/img/logo.png" alt="Logo" className="h-16" />
-        <nav className="space-x-10 text-lg font-semibold uppercase text-gray-800">
-          <Link to="/home" className="text-blue-700">Trang chủ</Link>
-          <Link to="/quan-ly-bai-dang">Quản lý bài đăng</Link>
-          <Link to="/thong-ke">Thống kê</Link>
-          <Link to="/quan-ly-nguoi-dung">Quản lý người dùng</Link>
-        </nav>
-      </header>
+    <div className="account-container">
+      <div className="account-top-bar">
+        <div className="account-stats">
+  <div className="stat-card">
+    <h4>Tổng tài khoản</h4>
+    <div className="value">40,689</div>
+  </div>
+  <div className="stat-card">
+    <h4>Số tài khoản hoạt động</h4>
+    <div className="value">40,283</div>
+  </div>
+  <div className="stat-card">
+    <h4>Số tài khoản bị khóa</h4>
+    <div className="value">406</div>
+  </div>
+  <div className="stat-card">
+    <h4>Tài khoản mới</h4>
+    <div className="value">4</div>
+  </div>
+</div>
+        <input type="text" placeholder="🔍 Tìm kiếm" className="search-input" />
+      </div>
 
-      {/* Main Content */}
-      <main className="flex-1 px-8 py-6">
-        <button className="bg-blue-700 text-white px-4 py-2 rounded mb-4 hover:bg-blue-800">
-          + Thêm tài khoản
-        </button>
-
-        <table className="min-w-full border text-center border-collapse">
+      <div className="table-wrapper">
+        <h3>Danh sách tài khoản</h3>
+        <table className="account-table">
           <thead>
-            <tr className="bg-blue-800 text-white">
-              <th className="border px-4 py-2">ID</th>
-              <th className="border px-4 py-2">NAME</th>
-              <th className="border px-4 py-2">SDT</th>
-              <th className="border px-4 py-2">EMAIL</th>
-              <th className="border px-4 py-2">MẬT KHẨU</th>
-              <th className="border px-4 py-2">HÀNH ĐỘNG</th>
+            <tr>
+              <th>ID</th>
+              <th>Tên tài khoản</th>
+              <th>Email</th>
+              <th>Thời gian tạo</th>
+              <th>Số điện thoại</th>
+              <th>Tình trạng</th>
+              <th>Thao tác</th>
             </tr>
           </thead>
           <tbody>
-            {users.map((user, idx) => (
-              <tr key={idx} className="bg-white hover:bg-gray-100">
-                <td className="border px-4 py-2">{user.id}</td>
-                <td className="border px-4 py-2">{user.name}</td>
-                <td className="border px-4 py-2">{user.phone}</td>
-                <td className="border px-4 py-2">{user.email}</td>
-                <td className="border px-4 py-2">{user.password}</td>
-                <td className="border px-4 py-2 space-x-4">
-                  <button className="text-blue-700 hover:scale-110">
+            {users.map((user) => (
+              <tr key={user.id}>
+                <td>{user.id}</td>
+                <td>{user.name}</td>
+                <td>{user.email}</td>
+                <td>{user.createdAt}</td>
+                <td>{user.phone}</td>
+                <td>
+                  <span
+                    className={`status-tag ${
+                      user.status === "Hoạt động" ? "active" : "banned"
+                    }`}
+                  >
+                    {user.status}
+                  </span>
+                </td>
+                <td>
+                  <button className="edit-btn">
                     <FaEdit />
                   </button>
-                  <button className="text-red-600 hover:scale-110">
+                  <button className="delete-btn">
                     <FaTrash />
                   </button>
                 </td>
@@ -69,36 +104,7 @@ export default function Home() {
             ))}
           </tbody>
         </table>
-      </main>
-
-      {/* Footer */}
-      <footer className="bg-black text-white px-8 py-6 grid grid-cols-3 text-sm">
-        <div>
-          <h4 className="font-bold mb-2">Information</h4>
-          <ul>
-            <li>Main</li>
-            <li>Gallery</li>
-            <li>Projects</li>
-            <li>Certifications</li>
-            <li>Contacts</li>
-          </ul>
-        </div>
-        <div>
-          <h4 className="font-bold mb-2">Contacts</h4>
-          <p>📍 1234 Sample Street, Austin Texas 78704</p>
-          <p>📞 512.333.2222</p>
-          <p>✉️ sampleemail@gmail.com</p>
-        </div>
-        <div>
-          <h4 className="font-bold mb-2">Social Media</h4>
-          <div className="flex space-x-4 text-lg mt-1">
-            <a href="#">📘</a>
-            <a href="#">🐦</a>
-            <a href="#">💼</a>
-            <a href="#">📌</a>
-          </div>
-        </div>
-      </footer>
+      </div>
     </div>
   );
 }

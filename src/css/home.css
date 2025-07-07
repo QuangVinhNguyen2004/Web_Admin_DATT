@@ -1,0 +1,148 @@
+/* Tổng thể trang quản lý tài khoản */
+.account-page {
+  padding: 2rem;
+  background-color: #f8fafc;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Header */
+.account-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.account-header h1 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #1e293b;
+}
+
+.account-header input[type="text"] {
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 9999px;
+  width: 250px;
+  outline: none;
+}
+
+/* Thống kê ngang */
+.account-stats {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.stat-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  flex: 1;
+  min-width: 150px;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+}
+
+.stat-card h4 {
+  color: #6b7280;
+  font-size: 0.95rem;
+  margin-bottom: 0.25rem;
+}
+
+.stat-card .value {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #111827;
+}
+
+/* Bảng người dùng */
+.account-table {
+  background-color: white;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.account-table h2 {
+  font-size: 1.25rem;
+  margin-bottom: 1.2rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.account-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.account-table th,
+.account-table td {
+  padding: 1rem;
+  text-align: left;
+  font-size: 0.95rem;
+  border-bottom: 1px solid #e5e7eb;
+  vertical-align: middle;
+}
+
+.account-table th {
+  background-color: #f3f4f6;
+  color: #374151;
+  font-weight: 600;
+}
+
+.account-table tr:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+.account-table tr:hover {
+  background-color: #f9fafb;
+}
+
+/* Trạng thái */
+.status-active {
+  background-color: #22c55e;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.status-blocked {
+  background-color: #ef4444;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  display: inline-block;
+}
+
+/* Hành động chỉnh sửa/xóa */
+.actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.actions button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+.actions .edit {
+  color: #3b82f6;
+}
+
+.actions .delete {
+  color: #ef4444;
+}
