@@ -45,26 +45,39 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// Đăng nhập
-router.post('/login', async (req, res) => {
+// Đăng nhập – chỉ cho phép tài khoản có role là "custom"
+router.post('/lg-custom', async (req, res) => {
   const { email, password } = req.body;
 
+  // B1: Kiểm tra đầu vào
   if (!email || !password) {
     return res.status(400).json({ message: 'Vui lòng nhập đầy đủ email và mật khẩu.' });
   }
 
   try {
+    // B2: Tìm tài khoản theo email
     const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ message: 'Tài khoản không tồn tại' });
+    if (!user) {
+      return res.status(400).json({ message: 'Tài khoản không tồn tại' });
+    }
 
-    // Kiểm tra trạng thái tài khoản
+    // B3: Chỉ cho phép đăng nhập nếu tài khoản có role là "custom"
+    if (user.role !== 'custom') {
+      return res.status(403).json({ message: 'Chỉ tài khoản custom mới được phép đăng nhập' });
+    }
+
+    // B4: Kiểm tra trạng thái tài khoản
     if (user.status === 'private') {
       return res.status(403).json({ message: 'Tài khoản đã bị khóa' });
     }
 
+    // B5: So sánh mật khẩu
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: 'Sai mật khẩu' });
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Sai mật khẩu' });
+    }
 
+    // B6: Trả về thông tin nếu đăng nhập thành công
     res.json({
       message: 'Đăng nhập thành công',
       userId: user._id,
@@ -78,6 +91,7 @@ router.post('/login', async (req, res) => {
     res.status(500).json({ message: 'Lỗi máy chủ. Vui lòng thử lại.' });
   }
 });
+
 
 // Cập nhật người dùng
 router.put('/:id', async (req, res) => {

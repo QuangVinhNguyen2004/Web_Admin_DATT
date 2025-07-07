@@ -1,0 +1,136 @@
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url("../img/anhnenbien.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.login-container {
+  width: 900px;
+  height: 500px;
+  display: flex;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+}
+
+.login-form {
+  width: 50%;
+  padding: 40px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.login-form h2 {
+  font-size: 28px;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.login-form input {
+  padding: 12px;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  width: 100%; 
+}
+
+.login-form .error-message {
+  color: red;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.login-form .forgot-password {
+  text-align: right;
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 16px;
+}
+
+.login-form .forgot-password span {
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.login-form button {
+  width: 100%;
+  padding: 12px;
+  background-color: #3b82f6;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-form button:hover {
+  background-color: #2563eb;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.social-icons img {
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}
+
+.login-welcome {
+  width: 50%;
+  background-color: rgba(0, 0, 0, 0.4);
+  color: #fff;
+  text-align: center;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.login-welcome h2 {
+  font-size: 36px;
+  margin-bottom: 16px;
+}
+
+.login-welcome p {
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+.login-welcome span {
+  font-weight: bold;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.login-welcome button {
+  background-color: #fff;
+  color: #2563eb;
+  padding: 10px 24px;
+  border: none;
+  border-radius: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.login-welcome button:hover {
+  background-color: #eee;
+}
