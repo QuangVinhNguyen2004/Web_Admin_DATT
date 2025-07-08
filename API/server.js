@@ -13,6 +13,6 @@ mongoose.connect(process.env.MONGO_URI)
   .catch(err => console.error(err));
 
 app.use('/api/user', require('./router/UserRouter'));
-
+app.use('/api/post', require('./router/PostRouter'));
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server chạy trên cổng ${PORT}`));

@@ -1,0 +1,157 @@
+/* Tổng thể */
+.post-container {
+  padding: 2rem;
+  background-color: #f9fafb;
+  font-family: 'Segoe UI', sans-serif;
+  min-height: 100vh;
+}
+
+/* Tiêu đề */
+.post-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  color: #1f2937;
+}
+
+/* Bảng */
+.post-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.post-table th,
+.post-table td {
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.post-table th {
+  background-color: #eff6ff;
+  color: #1d4ed8;
+  font-weight: 600;
+}
+
+.post-table tr:hover {
+  background-color: #f3f4f6;
+}
+
+/* Cột thao tác */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+/* Nút chung */
+.btn {
+  min-width: 90px;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+/* Nút duyệt */
+.btn-approve {
+  background-color: #16a34a;
+  color: white;
+}
+
+.btn-approve:hover {
+  background-color: #15803d;
+}
+
+/* Nút xem chi tiết */
+.btn-detail {
+  background-color: #2563eb;
+  color: white;
+}
+
+.btn-detail:hover {
+  background-color: #1d4ed8;
+}
+
+/* Nút đóng modal */
+.btn-close {
+  margin-top: 1.5rem;
+  background-color: #6b7280;
+  color: white;
+}
+
+.btn-close:hover {
+  background-color: #4b5563;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Modal Nội dung */
+.modal-content {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.25s ease-out;
+}
+
+.modal-content h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 1rem;
+}
+
+.modal-content p {
+  font-size: 1rem;
+  color: #374151;
+  line-height: 1.6;
+}
+
+/* Hiệu ứng fade-in */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive nhỏ */
+@media (max-width: 768px) {
+  .post-table th, .post-table td {
+    padding: 0.6rem 0.5rem;
+    font-size: 0.85rem;
+  }
+
+  .btn {
+    min-width: auto;
+    padding: 5px 10px;
+    font-size: 0.8rem;
+  }
+}
