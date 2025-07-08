@@ -6,15 +6,16 @@ import {
   FaClipboardCheck,
   FaChartBar,
   FaHandsHelping,
-} from "react-icons/fa"; 
+} from "react-icons/fa";
 import "./css/layoutAdmin.css";
 import logo from './assets/logo.png';
+
 const menuItems = [
-  { path: "/home", icon: <FaTachometerAlt />, label: "Bảng điều khiển" },
-  { path: "/quan-ly-nguoi-dung", icon: <FaUser />, label: "Người dùng" },
-  { path: "/quan-ly-bai-dang", icon: <FaClipboardCheck />, label: "Duyệt bài" },
-  { path: "/thong-ke", icon: <FaChartBar />, label: "Thống kê" },
-  { path: "/ho-tro", icon: <FaHandsHelping />, label: "Hỗ trợ" },
+  { path: "/dashboard/home", icon: <FaTachometerAlt />, label: "Bảng điều khiển" },
+  { path: "/dashboard/quan-ly-nguoi-dung", icon: <FaUser />, label: "Người dùng" },
+  { path: "/dashboard/quan-ly-bai-dang", icon: <FaClipboardCheck />, label: "Duyệt bài" },
+  { path: "/dashboard/thong-ke", icon: <FaChartBar />, label: "Thống kê" },
+  { path: "/dashboard/ho-tro", icon: <FaHandsHelping />, label: "Hỗ trợ" },
 ];
 
 const LayoutAdmin = () => {
@@ -30,7 +31,7 @@ const LayoutAdmin = () => {
     <div className="layout-container">
       {/* Header */}
       <header className="layout-header">
-        <Link to="/" className="logo-section">
+        <Link to="/dashboard/home" className="logo-section">
           <img src={logo} alt="FMCarer Logo" />
           <span className="brand-name">FMCarer</span>
         </Link>
@@ -64,7 +65,7 @@ const LayoutAdmin = () => {
           </nav>
         </aside>
 
-        {/* Main Content */}
+        {/* Nội dung chính */}
         <main className="main-content-wrapper">
           <div className="main-content">
             <Outlet />

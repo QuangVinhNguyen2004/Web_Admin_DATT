@@ -3,10 +3,16 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 
-// Lấy tất cả người dùng (ẩn password)
+// Lấy tất cả người dùng, có thể lọc 
 router.get('/', async (req, res) => {
   try {
-    const users = await User.find().select('-password');
+    const filter = {};
+
+    if (req.query.role) {
+      filter.role = req.query.role;
+    }
+
+    const users = await User.find(filter).select('-password');
     res.json(users);
   } catch (err) {
     res.status(500).json({ message: 'Lỗi máy chủ' });
@@ -93,7 +99,6 @@ router.post('/lg-custom', async (req, res) => {
 });
 
 
-// Cập nhật người dùng
 router.put('/:id', async (req, res) => {
   const { name, phone, email, password, imgUrl, role, status } = req.body;
   const { id } = req.params;
@@ -102,17 +107,17 @@ router.put('/:id', async (req, res) => {
     const user = await User.findById(id);
     if (!user) return res.status(404).json({ message: 'Không tìm thấy người dùng' });
 
-    if (password) {
+    if (typeof name === 'string') user.name = name;
+    if (typeof phone === 'string') user.phone = phone;
+    if (typeof email === 'string') user.email = email;
+    if (typeof imgUrl !== 'undefined') user.imgUrl = imgUrl;
+    if (typeof role === 'string') user.role = role;
+    if (typeof status === 'string') user.status = status;
+
+    if (typeof password === 'string' && password.trim() !== '') {
       const hashedPassword = await bcrypt.hash(password, 10);
       user.password = hashedPassword;
     }
-
-    if (name) user.name = name;
-    if (phone) user.phone = phone;
-    if (email) user.email = email;
-    if (imgUrl !== undefined) user.imgUrl = imgUrl;
-    if (role) user.role = role;
-    if (status) user.status = status;
 
     await user.save();
 
@@ -120,6 +125,24 @@ router.put('/:id', async (req, res) => {
   } catch (err) {
     console.error('Lỗi cập nhật người dùng:', err);
     res.status(500).json({ message: 'Lỗi máy chủ khi cập nhật người dùng' });
+  }
+});
+
+router.patch('/:id/status', async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  try {
+    const user = await User.findById(id);
+    if (!user) return res.status(404).json({ message: 'Không tìm thấy người dùng' });
+
+    user.status = status;
+    await user.save();
+
+    res.json({ message: 'Cập nhật trạng thái thành công' });
+  } catch (err) {
+    console.error('Lỗi cập nhật trạng thái:', err);
+    res.status(500).json({ message: 'Lỗi máy chủ' });
   }
 });
 

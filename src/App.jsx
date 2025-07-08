@@ -26,7 +26,7 @@ function App() {
         <Route path="/dashboard" element={<LayoutAdmin />}>
           <Route index element={<Home />} /> {/* / → Home */}
           <Route path="home" element={<Home />} />
-          <Route path="quan-ly-nguoi-dung" element={<UserManagement />} />
+          <Route path="quan-ly-nguoi-dung" element={<Home />} />
           <Route path="quan-ly-bai-dang" element={<PostManagement />} />
           <Route path="thong-ke" element={<Statistics />} />
           <Route path="ho-tro" element={<Support />} />
