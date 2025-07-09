@@ -81,7 +81,7 @@ router.post('/login', async (req, res) => {
     // B5: Trả về thông tin nếu đăng nhập thành công
     res.json({
       message: 'Đăng nhập thành công',
-      userId: user._id,
+      _id: user._id,
       name: user.name,
       email: user.email,
       role: user.role,

@@ -15,5 +15,6 @@ mongoose.connect(process.env.MONGO_URI)
 app.use('/api/user', require('./router/UserRouter'));
 app.use('/api/post', require('./router/PostRouter'));
 app.use('/api/child', require('./router/ChildRouter'));
+app.use('/api/Schedule', require('./router/ScheduleRouter'));
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server chạy trên cổng ${PORT}`));

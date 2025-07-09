@@ -62,18 +62,22 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-// Lấy danh sách hồ sơ trẻ theo user_id (query param)
+// lấy danh sách hồ sơ trẻ theo user
 router.get('/', async (req, res) => {
   try {
     const { user_id } = req.query;
+
     if (!user_id) {
-      return res.status(400).json({ message: 'Thiếu tham số user_id' });
+      return res.status(400).json({ message: 'Thiếu user_id' });
     }
+
     const children = await Child.find({ user_id });
-    res.json(children);
-  } catch (error) {
-    console.error('Lỗi lấy danh sách hồ sơ trẻ:', error);
-    res.status(500).json({ message: 'Lỗi máy chủ khi lấy danh sách hồ sơ trẻ' });
+
+    // ✅ Trả về mảng rỗng nếu chưa có hồ sơ nào
+    return res.status(200).json(children);
+  } catch (err) {
+    console.error('Lỗi lấy danh sách trẻ:', err);
+    return res.status(500).json({ message: 'Lỗi server khi lấy hồ sơ trẻ' });
   }
 });
 
