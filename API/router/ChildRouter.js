@@ -33,20 +33,26 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Sửa hồ sơ trẻ theo _id
+// PUT /child/:id - cập nhật hồ sơ trẻ
 router.put('/:id', async (req, res) => {
   try {
     const updateData = req.body;
+
+    // Bạn có thể validate dữ liệu tại đây nếu muốn
+
     const updatedChild = await Child.findByIdAndUpdate(req.params.id, updateData, { new: true });
+
     if (!updatedChild) {
       return res.status(404).json({ message: 'Không tìm thấy hồ sơ trẻ' });
     }
+
     res.json(updatedChild);
   } catch (error) {
     console.error('Lỗi cập nhật hồ sơ trẻ:', error);
     res.status(500).json({ message: 'Lỗi máy chủ khi cập nhật hồ sơ trẻ' });
   }
 });
+
 
 // Xóa hồ sơ trẻ theo _id
 router.delete('/:id', async (req, res) => {

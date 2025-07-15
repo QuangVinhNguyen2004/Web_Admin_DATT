@@ -7,12 +7,16 @@ const PostSchema = new mongoose.Schema({
   loai: {   
     type: String,
     enum: ['Cộng đồng', 'Gia đình'],
-    default: 'chờ duyệt' },
+    default: 'Cộng đồng' 
+  },
   trang_thai: {
     type: String,
     enum: ['chờ duyệt', 'đã duyệt', 'bị từ chối'],
     default: 'chờ duyệt'
   },
+  video: { type: String, default: null }, // đường dẫn hoặc tên file video
+  anh: { type: [String], default: [] },   // danh sách các ảnh (URL hoặc tên file)
+
   thoi_gian_tao: { type: Date, default: Date.now }
 }, {
   timestamps: true

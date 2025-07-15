@@ -80,5 +80,48 @@ router.delete('/:id', async (req, res) => {
     res.status(500).json({ message: 'Lỗi server khi xóa lịch' });
   }
 });
+// Tạo dữ liệu mẫu cho 1 child_id
+router.get('/seed', async (req, res) => {
+  try {
+    const { child_id } = req.query;
+    if (!child_id) return res.status(400).json({ message: 'Thiếu child_id' });
+
+    const dummySchedules = [
+      {
+        activity: 'Uống sữa',
+        description: 'Sữa công thức 200ml',
+        startTime: new Date('2025-07-11T07:30:00'),
+        duration: 15,
+        repeat: 'Không',
+      },
+      {
+        activity: 'Ngủ trưa',
+        description: 'Ngủ từ 12h đến 13h30',
+        startTime: new Date('2025-07-11T12:00:00'),
+        duration: 90,
+        repeat: 'Không',
+      },
+      {
+        activity: 'Chơi đồ chơi',
+        description: 'Lắp lego và vẽ tranh',
+        startTime: new Date('2025-07-11T15:00:00'),
+        duration: 30,
+        repeat: 'Không',
+      },
+    ];
+
+    const inserted = await Schedule.insertMany(
+      dummySchedules.map((item) => ({ ...item, child_id }))
+    );
+
+    res.status(201).json({
+      message: 'Đã tạo dữ liệu mẫu thành công',
+      data: inserted,
+    });
+  } catch (err) {
+    console.error('Lỗi seed dữ liệu:', err);
+    res.status(500).json({ message: 'Lỗi server khi tạo dữ liệu mẫu' });
+  }
+});
 
 module.exports = router;

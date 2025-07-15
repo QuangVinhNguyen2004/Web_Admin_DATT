@@ -9,7 +9,7 @@ export default function PostManagement() {
   const fetchPosts = async () => {
     try {
       const data = await getPosts({
-        loai: "cộng đồng",
+        loai: "Cộng đồng",
         trang_thai: "chờ duyệt",
       });
       setPosts(data);
