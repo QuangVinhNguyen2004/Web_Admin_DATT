@@ -248,6 +248,18 @@ router.patch('/:id/status', async (req, res) => {
   }
 });
 
-
+// Lấy thông tin user theo ID
+router.get('/:id', async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).select('-password'); // Ẩn mật khẩu
+    if (!user) {
+      return res.status(404).json({ message: 'Người dùng không tồn tại' });
+    }
+    res.json(user);
+  } catch (err) {
+    console.error('Lỗi getUserById:', err);
+    res.status(500).json({ message: 'Lỗi server khi lấy thông tin người dùng' });
+  }
+});
 
 module.exports = router;

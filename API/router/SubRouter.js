@@ -2,6 +2,30 @@ const express = require('express');
 const router = express.Router();
 const SubUser = require('../models/Sub');
 
+// Đăng nhập sub-user
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const subUser = await SubUser.findOne({ email });
+    if (!subUser) {
+      return res.status(404).json({ error: 'Email không tồn tại' });
+    }
+
+    // So sánh mật khẩu (nếu có mã hóa thì dùng bcrypt.compare)
+    if (subUser.password !== password) {
+      return res.status(401).json({ error: 'Mật khẩu không đúng' });
+    }
+
+    res.status(200).json({
+      message: 'Đăng nhập thành công',
+      subUser,
+    });
+  } catch (err) {
+    res.status(500).json({ error: 'Lỗi server khi đăng nhập', details: err.message });
+  }
+});
+
+
 // Tạo sub-user
 router.post('/', async (req, res) => {
   try {
