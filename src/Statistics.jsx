@@ -1,87 +1,164 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
+import { getAllPayments } from "./api/paymentApi"; // hàm API lấy tất cả thanh toán
+import "./css/statistics.css";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
 export default function Statistics() {
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  // Khoảng thời gian thống kê
+  const [startDate, setStartDate] = useState(() => {
+    const d = new Date();
+    d.setMonth(d.getMonth() - 1); // mặc định 1 tháng trước
+    return d.toISOString().slice(0, 10);
+  });
+  const [endDate, setEndDate] = useState(() => {
+    return new Date().toISOString().slice(0, 10);
+  });
 
-  const handleSubmit = () => {
-    alert(`Thống kê từ ${startDate} đến ${endDate}`);
-  };
+  const [payments, setPayments] = useState([]);
+  const [filteredPayments, setFilteredPayments] = useState([]);
+
+  useEffect(() => {
+    async function fetchPayments() {
+      try {
+        const data = await getAllPayments();
+        setPayments(data);
+      } catch (error) {
+        console.error("Lỗi lấy dữ liệu thanh toán:", error);
+      }
+    }
+    fetchPayments();
+  }, []);
+
+  // Lọc theo ngày
+  useEffect(() => {
+    if (!startDate || !endDate) return;
+    const filtered = payments.filter((p) => {
+      const paidDate = new Date(p.createdAt).toISOString().slice(0, 10);
+      return paidDate >= startDate && paidDate <= endDate;
+    });
+    setFilteredPayments(filtered);
+  }, [payments, startDate, endDate]);
+
+  // Tổng doanh thu và số giao dịch
+  const totalRevenue = filteredPayments.reduce(
+    (sum, p) => sum + p.amount,
+    0
+  );
+  const totalTransactions = filteredPayments.length;
+
+  // Chuẩn bị data cho biểu đồ: nhóm doanh thu theo ngày
+  const revenueByDate = filteredPayments.reduce((acc, p) => {
+    const dateKey = new Date(p.createdAt).toISOString().slice(0, 10);
+    acc[dateKey] = (acc[dateKey] || 0) + p.amount;
+    return acc;
+  }, {});
+
+  // Chuyển thành mảng để vẽ biểu đồ
+  const chartData = Object.entries(revenueByDate)
+    .sort((a, b) => (a[0] > b[0] ? 1 : -1))
+    .map(([date, amount]) => ({ date, amount }));
 
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Header */}
-      <header className="flex justify-between items-center px-8 py-4 bg-white shadow-md">
-        <img src="/img/logo.png" alt="Logo" className="h-16" />
-        <nav className="space-x-10 text-lg font-semibold uppercase text-gray-800">
-          <a href="/home">Trang chủ</a>
-          <a href="/quan-ly-bai-dang">Quản lý bài đăng</a>
-          <a href="/thong-ke" className="text-blue-700">Thống kê</a>
-          <a href="/quan-ly-nguoi-dung">Quản lý người dùng</a>
-        </nav>
-      </header>
+    <div className="statistics-container">
+      <h2>Thống kê doanh thu</h2>
 
-      {/* Main content */}
-      <main className="flex-1 bg-gray-300 flex flex-col items-center justify-center py-12">
-        <h1 className="text-3xl font-bold mb-10">Thống kê</h1>
-        <div className="flex gap-8 mb-8">
-          <div className="flex items-center gap-2 bg-white px-4 py-2 rounded shadow">
-            <span role="img" aria-label="calendar">📅</span>
-            <input
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              className="outline-none"
-              placeholder="Chọn ngày bắt đầu"
-            />
-          </div>
-          <div className="flex items-center gap-2 bg-white px-4 py-2 rounded shadow">
-            <span role="img" aria-label="calendar">📅</span>
-            <input
-              type="date"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-              className="outline-none"
-              placeholder="Chọn ngày kết thúc"
-            />
-          </div>
-          <button
-            onClick={handleSubmit}
-            className="bg-red-800 text-white px-6 py-2 font-bold rounded hover:bg-red-700"
+      {/* Bộ lọc khoảng thời gian */}
+      <div className="filter-date">
+        <label>
+          Từ ngày:{" "}
+          <input
+            type="date"
+            value={startDate}
+            max={endDate}
+            onChange={(e) => setStartDate(e.target.value)}
+          />
+        </label>
+        <label>
+          Đến ngày:{" "}
+          <input
+            type="date"
+            value={endDate}
+            min={startDate}
+            max={new Date().toISOString().slice(0, 10)}
+            onChange={(e) => setEndDate(e.target.value)}
+          />
+        </label>
+      </div>
+
+      {/* Thống kê tổng quan */}
+      <div className="stats-summary">
+        <div className="stat-card">
+          <h4>Tổng doanh thu</h4>
+          <div className="value">{totalRevenue.toLocaleString("vi-VN")} VNĐ</div>
+        </div>
+        <div className="stat-card">
+          <h4>Tổng giao dịch</h4>
+          <div className="value">{totalTransactions}</div>
+        </div>
+      </div>
+
+      {/* Biểu đồ doanh thu */}
+      <div className="chart-wrapper">
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart
+            data={chartData}
+            margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
           >
-            THỐNG KÊ
-          </button>
-        </div>
-      </main>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="date" />
+            <YAxis />
+            <Tooltip />
+            <Line
+              type="monotone"
+              dataKey="amount"
+              stroke="#8884d8"
+              strokeWidth={2}
+              dot={{ r: 4 }}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
 
-      {/* Footer */}
-      <footer className="bg-black text-white px-8 py-6 grid grid-cols-3 text-sm">
-        <div>
-          <h4 className="font-bold mb-2">Information</h4>
-          <ul>
-            <li>Main</li>
-            <li>Gallery</li>
-            <li>Projects</li>
-            <li>Certifications</li>
-            <li>Contacts</li>
-          </ul>
+      {/* Bảng chi tiết */}
+      <div className="table-wrapper">
+        <h3>Chi tiết giao dịch</h3>
+        <div className="scrollable-table">
+          <table className="payment-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Người dùng</th>
+                <th>Số tiền (VNĐ)</th>
+                <th>Thời gian gia hạn (ngày)</th>
+                <th>Phương thức</th>
+                <th>Trạng thái</th>
+                <th>Ngày thanh toán</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredPayments.map((p) => (
+                <tr key={p._id}>
+                  <td>{p._id}</td>
+                  <td>{p.user_id?.name || "Không rõ"}</td>
+                  <td>{p.amount.toLocaleString("vi-VN")}</td>
+                  <td>{p.duration}</td>
+                  <td>{p.method}</td>
+                  <td>{p.status}</td>
+                  <td>{new Date(p.createdAt).toLocaleString()}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-        <div>
-          <h4 className="font-bold mb-2">Contacts</h4>
-          <p>📍 1234 Sample Street, Austin Texas 78704</p>
-          <p>📞 512.333.2222</p>
-          <p>✉️ sampleemail@gmail.com</p>
-        </div>
-        <div>
-          <h4 className="font-bold mb-2">Social Media</h4>
-          <div className="flex space-x-4 text-lg mt-1">
-            <a href="#">📘</a>
-            <a href="#">🐦</a>
-            <a href="#">💼</a>
-            <a href="#">📌</a>
-          </div>
-        </div>
-      </footer>
+      </div>
     </div>
   );
 }

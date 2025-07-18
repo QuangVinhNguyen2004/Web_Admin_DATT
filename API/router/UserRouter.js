@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
-
+const SubUser = require('../models/Sub');
 // Lấy tất cả người dùng, có thể lọc 
 router.get('/', async (req, res) => {
   try {
@@ -92,6 +92,53 @@ router.post('/login', async (req, res) => {
     res.status(500).json({ message: 'Lỗi máy chủ. Vui lòng thử lại.' });
   }
 });
+// Đăng nhập tài khoản phụ
+router.post('/login-subuser', async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ message: 'Vui lòng nhập đầy đủ email và mật khẩu.' });
+  }
+
+  try {
+    // Tìm subUser theo email
+    const subUser = await SubUser.findOne({ email }).populate('user_id'); // populate để lấy user chính
+
+    if (!subUser) {
+      return res.status(400).json({ message: 'Tài khoản phụ không tồn tại' });
+    }
+
+    // Kiểm tra tài khoản chính
+    const mainUser = subUser.user_id;
+    if (!mainUser) {
+      return res.status(400).json({ message: 'Tài khoản chính không tồn tại' });
+    }
+
+    if (mainUser.status === 'private') {
+      return res.status(403).json({ message: 'Tài khoản chính đang bị khóa, không thể đăng nhập tài khoản phụ' });
+    }
+
+    // So sánh mật khẩu subUser
+    const isMatch = await bcrypt.compare(password, subUser.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Sai mật khẩu' });
+    }
+
+    // Đăng nhập thành công, trả dữ liệu subUser (không trả mật khẩu)
+    res.json({
+      message: 'Đăng nhập thành công',
+      _id: subUser._id,
+      name: subUser.name,
+      email: subUser.email,
+      phone: subUser.phone,
+      imgUrl: subUser.imgUrl,
+      user_id: mainUser._id, // tham chiếu tài khoản chính
+    });
+  } catch (err) {
+    console.error('Lỗi đăng nhập tài khoản phụ:', err);
+    res.status(500).json({ message: 'Lỗi máy chủ. Vui lòng thử lại.' });
+  }
+});
 
 // Đăng nhập – chỉ cho phép tài khoản có role là "custom"
 router.post('/lg-custom', async (req, res) => {
@@ -141,32 +188,45 @@ router.post('/lg-custom', async (req, res) => {
 });
 
 
+// Cập nhật user
 router.put('/:id', async (req, res) => {
-  const { name, phone, email, password, imgUrl, role, status } = req.body;
-  const { id } = req.params;
-
   try {
-    const user = await User.findById(id);
-    if (!user) return res.status(404).json({ message: 'Không tìm thấy người dùng' });
+    const { name, email, phone, password, imgUrl } = req.body;
+    const { id } = req.params;
 
-    if (typeof name === 'string') user.name = name;
-    if (typeof phone === 'string') user.phone = phone;
-    if (typeof email === 'string') user.email = email;
-    if (typeof imgUrl !== 'undefined') user.imgUrl = imgUrl;
-    if (typeof role === 'string') user.role = role;
-    if (typeof status === 'string') user.status = status;
-
-    if (typeof password === 'string' && password.trim() !== '') {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      user.password = hashedPassword;
+    const existingUser = await User.findById(id);
+    if (!existingUser) {
+      return res.status(404).json({ message: 'Không tìm thấy người dùng' });
     }
 
-    await user.save();
+    // Xử lý email nếu có thay đổi
+    if (email) {
+      const emailLower = email.trim().toLowerCase();
+      const currentEmailLower = existingUser.email.trim().toLowerCase();
 
-    res.json({ message: 'Cập nhật người dùng thành công', userId: user._id });
-  } catch (err) {
-    console.error('Lỗi cập nhật người dùng:', err);
-    res.status(500).json({ message: 'Lỗi máy chủ khi cập nhật người dùng' });
+      if (emailLower !== currentEmailLower) {
+        const emailExists = await User.findOne({ email: emailLower });
+        if (emailExists) {
+          return res.status(400).json({ message: 'Email đã được sử dụng' });
+        }
+        existingUser.email = emailLower;
+      }
+    }
+
+    // Cập nhật các thông tin khác nếu có
+    if (name) existingUser.name = name;
+    if (phone) existingUser.phone = phone;
+    if (imgUrl) existingUser.imgUrl = imgUrl;
+    if (password && password.trim()) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      existingUser.password = hashedPassword;
+    }
+
+    const updatedUser = await existingUser.save();
+    res.json(updatedUser);
+  } catch (error) {
+    console.error('Lỗi cập nhật user:', error.message, error.stack);
+    res.status(500).json({ message: 'Lỗi server khi cập nhật người dùng' });
   }
 });
 

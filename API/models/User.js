@@ -39,6 +39,10 @@ const userSchema = new mongoose.Schema({
     enum: ['open', 'private'],
     default: 'open',
   },
+  expiredAt: {
+  type: Date,
+  default: () => new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // mặc định 30 ngày từ khi tạo
+},
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);

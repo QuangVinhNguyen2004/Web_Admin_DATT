@@ -22,7 +22,8 @@ app.use('/api/Schedule', require('./router/ScheduleRouter'));
 app.use('/api/Diary', require('./router/DiaryRouter'));
 app.use('/api/upload',  require('./router/uploadRouter'));
 app.use('/api/notifications', require('./router/NotificationRouter'));
-
+app.use('/api/sub-users', require('./router/SubRouter'));
+app.use('/api/payments', require('./router/PaymentRouter'));
 // Phục vụ file tĩnh (ảnh/video đã upload)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 

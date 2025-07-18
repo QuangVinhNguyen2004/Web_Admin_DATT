@@ -35,7 +35,7 @@ router.post('/', upload.fields([
     console.log('>>> Body:', req.body);
     console.log('>>> Files:', req.files);
 
-    const { tieu_de, noi_dung, loai, user } = req.body;
+    const { tieu_de, noi_dung, loai, trang_thai, user } = req.body;
 
     const videoFile = req.files['video']?.[0];
     const imageFiles = req.files['anh'] || [];
@@ -48,6 +48,7 @@ router.post('/', upload.fields([
       tieu_de,
       noi_dung,
       loai,
+      trang_thai,
       video: videoPath,
       anh: imagePaths
     });
